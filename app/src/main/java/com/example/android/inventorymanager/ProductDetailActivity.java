@@ -39,7 +39,6 @@ import android.widget.Toast;
 
 import com.example.android.inventorymanager.Data.ProductContract.ProductEntry;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -356,19 +355,19 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
      */
     private void saveProduct() {
         String name = pNameET.getText().toString().trim();
-        String quantity = pQuantityET.getText().toString().trim();
+        String quantity = Integer.toString(productQuantity);
         String unitPrice = pPriceET.getText().toString().trim();
         String photoPath = null;
 
-        if (productUri != null) {
-            photoPath = productUri.getPath();
-            productImageView.setTag(photoPath);
+        if (productUri == null && TextUtils.isEmpty(name) || photoPath == null) {
+            Toast.makeText(this, "All Fields Must Be Filled Out", Toast.LENGTH_LONG).show();
+            return;
         }
 
         // Check to see if this is a new item
-        if (productUri == null && TextUtils.isEmpty(name) || photoPath == "") {
-            Toast.makeText(this, "All Fields Must Be Filled Out", Toast.LENGTH_LONG).show();
-            return;
+        if (productUri == null) {
+            photoPath = photoUri.getPath();
+            productImageView.setTag(photoPath);
         }
 
         // Build a ContentValues with the input
@@ -389,7 +388,6 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             stock = Integer.parseInt(quantity);
         }
         values.put(ProductEntry.COLUMN_QUANTITY, stock);
-
 
         // Determine if this is a new or existing item
         if (productUri == null) {
@@ -412,18 +410,6 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     }
 
     /**
-     * Convert from bitmap to byte array
-     *
-     * @param bitmap: Data retrieved from the user galery that will be
-     *              converted to byte[] in order to store in database BLOB
-     */
-    public static byte[] getBytes(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        return stream.toByteArray();
-    }
-
-    /**
      * Convert from byte array to bitmap
      *
      * @param image: BLOB from the database converted to a Bitmap
@@ -431,15 +417,6 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
      */
     public static Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
-    }
-
-    /**
-     * Method to define if any of the EditText fields are empty or contain invalid inputs
-     *
-     * @param string: String received as a parameter to be checked with this method
-     */
-    private boolean checkFieldEmpty(String string) {
-        return TextUtils.isEmpty(string) || string.equals(".");
     }
 
     /**
