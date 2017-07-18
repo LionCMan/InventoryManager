@@ -106,6 +106,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
     private boolean isGalleryPicture = false;
     public String mImage;
+    private Uri photoUri;
 
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileprovider";
 
@@ -148,8 +149,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             // Initialise Button to order more from supplier
             /* Button to order more quantity from supplier */
             Button orderButton = (Button) findViewById(R.id.button_order_from_supplier);
-            // Make button visible
-            orderButton.setVisibility(View.VISIBLE);
+
             orderButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -358,17 +358,15 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         String name = pNameET.getText().toString().trim();
         String quantity = pQuantityET.getText().toString().trim();
         String unitPrice = pPriceET.getText().toString().trim();
-        String photoPath = "";
+        String photoPath = null;
 
         if (productUri != null) {
             photoPath = productUri.getPath();
             productImageView.setTag(photoPath);
-        } else {
-            photoPath = mImage;
         }
 
         // Check to see if this is a new item
-        if (productUri == null && TextUtils.isEmpty(name) || TextUtils.isEmpty(quantity) || photoPath == "") {
+        if (productUri == null && TextUtils.isEmpty(name) || photoPath == "") {
             Toast.makeText(this, "All Fields Must Be Filled Out", Toast.LENGTH_LONG).show();
             return;
         }
@@ -391,6 +389,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             stock = Integer.parseInt(quantity);
         }
         values.put(ProductEntry.COLUMN_QUANTITY, stock);
+
 
         // Determine if this is a new or existing item
         if (productUri == null) {
@@ -629,10 +628,10 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
             Log.d(LOG_TAG, "File: " + f.getAbsolutePath());
 
-            productUri = FileProvider.getUriForFile(
+            photoUri = FileProvider.getUriForFile(
                     this, FILE_PROVIDER_AUTHORITY, f);
 
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, productUri);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 
             // Solution taken from http://stackoverflow.com/a/18332000/3346625
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
@@ -640,7 +639,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
                         getPackageManager().queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
                 for (ResolveInfo resolveInfo : resInfoList) {
                     String packageName = resolveInfo.activityInfo.packageName;
-                    grantUriPermission(packageName, productUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                    grantUriPermission(packageName, photoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
                             Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
             }
@@ -667,18 +666,18 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             // provided to this method as a parameter.  Pull that uri using "resultData.getData()"
 
             if (resultData != null) {
-                productUri = resultData.getData();
-                Log.i(LOG_TAG, "Uri: " + productUri.toString());
+                photoUri = resultData.getData();
+                Log.i(LOG_TAG, "Uri: " + photoUri.toString());
 
-                productBitmap = getBitmapFromUri(productUri);
+                productBitmap = getBitmapFromUri(photoUri);
                 productImageView.setImageBitmap(productBitmap);
 
                 isGalleryPicture = true;
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Log.i(LOG_TAG, "Uri: " + productUri.toString());
+            Log.i(LOG_TAG, "Uri: " + photoUri.toString());
 
-            productBitmap = getBitmapFromUri(productUri);
+            productBitmap = getBitmapFromUri(photoUri);
             productImageView.setImageBitmap(productBitmap);
 
             isGalleryPicture = false;
