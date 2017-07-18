@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/background"
+    android:padding="@dimen/padding">
+
+    <LinearLayout
+        android:layout_width="@dimen/zero_layout_width_height"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:textSize="@dimen/large_font_size"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/text_view_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:textSize="@dimen/medium_font_size"
+            android:fontFamily="serif"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/text_view_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:layout_marginBottom="@dimen/padding"
+            android:textSize="@dimen/medium_font_size"
+            android:textStyle="italic"
+            android:fontFamily="serif"
+            android:textColor="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/zero_layout_width_height"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/button_sale"
+            android:layout_width="@dimen/sale_button_width"
+            android:layout_height="@dimen/sale_button_height"
+            android:layout_centerInParent="true"
+            android:text="@string/button_sale"
+            android:focusable="false"
+            android:textAllCaps="true"
+            android:background="@drawable/sale_button"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:fontFamily="serif"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

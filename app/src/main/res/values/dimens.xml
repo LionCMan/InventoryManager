@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="large_font_size">18sp</dimen>
+    <dimen name="margin">32dp</dimen>
+    <dimen name="padding">8dp</dimen>
+    <dimen name="zero_layout_width_height">0dp</dimen>
+    <dimen name="medium_font_size">14sp</dimen>
+    <dimen name="sale_button_width">96dp</dimen>
+    <dimen name="sale_button_height">48dp</dimen>
+    <dimen name="standard_font_size">12sp</dimen>
+    <dimen name="increase_decrease_one_button_width">36dp</dimen>
+    <dimen name="increase_decrease_one_button_height">36dp</dimen>
+    <dimen name="small_margin">16dp</dimen>
+    <dimen name="image_size">192dp</dimen>
+    <dimen name="four">4dp</dimen>
+</resources>
