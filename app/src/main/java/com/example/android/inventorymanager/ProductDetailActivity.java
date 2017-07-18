@@ -72,6 +72,8 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     private Button increaseQuantityIntervalButton;    // Increase by many
     private Button decreaseQuantityIntervalButton;    // Decrease by many
 
+    private Button orderButton;
+
     /** Final for the image intent request code */
     private final static int SELECT_PHOTO = 200;
 
@@ -115,6 +117,9 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
+        // Find all relevant views that we will need to read or show user input
+        initialiseViews();
+
         requestPermissions();
 
         // Receive Uri data from intent
@@ -125,17 +130,16 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         if (productUri != null) {
             // If not null means that a product register will be edited
             setTitle(R.string.activity_detail_edit);
+            orderButton.setVisibility(View.VISIBLE);
             // Kick off LoaderManager
             getLoaderManager().initLoader(URI_LOADER, null, this);
         } else {
             // If null means that a new product register will be created
             setTitle(R.string.activity_detail_new);
+            orderButton.setVisibility(View.GONE);
             // Invalidate options menu (delete button) since there's no record
             invalidateOptionsMenu();
         }
-
-        // Find all relevant views that we will need to read or show user input
-        initialiseViews();
 
         // Set on touch listener to all relevant views
         setOnTouchListener();
@@ -147,8 +151,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         if (productUri != null) {
             // Initialise Button to order more from supplier
             /* Button to order more quantity from supplier */
-            Button orderButton = (Button) findViewById(R.id.button_order_from_supplier);
-
+            orderButton = (Button) findViewById(R.id.button_order_from_supplier);
             orderButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -359,15 +362,15 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         String unitPrice = pPriceET.getText().toString().trim();
         String photoPath = null;
 
-        if (productUri == null && TextUtils.isEmpty(name) || photoPath == null) {
-            Toast.makeText(this, "All Fields Must Be Filled Out", Toast.LENGTH_LONG).show();
-            return;
-        }
-
         // Check to see if this is a new item
         if (productUri == null) {
             photoPath = photoUri.getPath();
             productImageView.setTag(photoPath);
+        }
+
+        if (productUri == null && TextUtils.isEmpty(name) || photoPath == null) {
+            Toast.makeText(this, R.string.toast_fill_out_feilds, Toast.LENGTH_LONG).show();
+            return;
         }
 
         // Build a ContentValues with the input

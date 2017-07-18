@@ -26,8 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/padding"
-        android:layout_above="@+id/button_order_from_supplier">
+        android:layout_above="@+id/button_order_from_supplier"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="match_parent"
@@ -97,13 +98,17 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button_increase_one"
+                android:id="@+id/button_decrease_one"
                 android:layout_width="@dimen/increase_decrease_one_button_width"
                 android:layout_height="@dimen/increase_decrease_one_button_height"
-                android:text="@string/button_increase_one"
+                android:layout_marginEnd="@dimen/padding"
+                android:layout_marginRight="@dimen/padding"
+                android:text="@string/button_decrease_one"
+                android:textStyle="bold"
                 android:background="@drawable/sale_button"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_margin="@dimen/four" />
+
 
             <TextView
                 android:id="@+id/text_view_quantity_final"
@@ -118,13 +123,10 @@
                 android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/button_decrease_one"
+                android:id="@+id/button_increase_one"
                 android:layout_width="@dimen/increase_decrease_one_button_width"
                 android:layout_height="@dimen/increase_decrease_one_button_height"
-                android:layout_marginEnd="@dimen/padding"
-                android:layout_marginRight="@dimen/padding"
-                android:text="@string/button_decrease_one"
-                android:textStyle="bold"
+                android:text="@string/button_increase_one"
                 android:background="@drawable/sale_button"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_margin="@dimen/four" />
@@ -133,11 +135,13 @@
                 android:layout_margin="@dimen/small_margin"
                 android:layout_height="@dimen/zero_layout_width_height"
                 android:layout_width="@dimen/zero_layout_width_height"/>
+
             <Button
-                android:id="@+id/button_increase_n"
+                android:id="@+id/button_decrease_n"
                 android:layout_width="@dimen/increase_decrease_one_button_width"
                 android:layout_height="@dimen/increase_decrease_one_button_height"
-                android:text="@string/button_increase_one"
+                android:text="@string/button_decrease_one"
+                android:textStyle="bold"
                 android:background="@drawable/sale_button"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_margin="@dimen/four"/>
@@ -157,11 +161,10 @@
                 android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/button_decrease_n"
+                android:id="@+id/button_increase_n"
                 android:layout_width="@dimen/increase_decrease_one_button_width"
                 android:layout_height="@dimen/increase_decrease_one_button_height"
-                android:text="@string/button_decrease_one"
-                android:textStyle="bold"
+                android:text="@string/button_increase_one"
                 android:background="@drawable/sale_button"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_margin="@dimen/four"/>
