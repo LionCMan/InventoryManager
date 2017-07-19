@@ -370,6 +370,8 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         } else if (title != editTitle) {
             Toast.makeText(this, R.string.toast_take_photo, Toast.LENGTH_LONG).show();
             return;
+        } else {
+            photoPath = mImage;
         }
 
         if (productUri == null && TextUtils.isEmpty(name)) {
