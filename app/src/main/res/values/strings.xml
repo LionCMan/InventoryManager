@@ -47,5 +47,6 @@
     <string name="update_error">Error updating product</string>
     <string name="update_successful">Product update successful</string>
     <string name="toast_fill_out_feilds">All Fields Must Be Filled Out</string>
+    <string name="toast_take_photo">No photo found. Click on the camera image to take a photo.</string>
 
 </resources>

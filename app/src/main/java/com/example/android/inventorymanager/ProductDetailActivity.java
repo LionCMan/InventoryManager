@@ -146,29 +146,25 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     }
 
     private void initialiseViews() {
-        // Check if it's an existing product to make the btton visible so
-        // the user can order more from existing product
-        if (productUri != null) {
-            // Initialise Button to order more from supplier
-            /* Button to order more quantity from supplier */
-            orderButton = (Button) findViewById(R.id.button_order_from_supplier);
-            orderButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setData(Uri.parse("mailto:"));
-                    intent.setType("text/plain");
-                    // Defining supplier's email. Ideally it would come from the product database in a real world
-                    // application but I am using a string to make it simple for this exercise.
-                    intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.supplier_email));
-                    intent.putExtra(Intent.EXTRA_SUBJECT, productName);
-                    startActivity(Intent.createChooser(intent, "Send mail..."));
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
+        // Initialise Button to order more from supplier
+        orderButton = (Button) findViewById(R.id.button_order_from_supplier);
+        /* Button to order more quantity from supplier */
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setData(Uri.parse("mailto:"));
+                intent.setType("text/plain");
+                // Defining supplier's email. Ideally it would come from the product database in a real world
+                // application but I am using a string to make it simple for this exercise.
+                intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.supplier_email));
+                intent.putExtra(Intent.EXTRA_SUBJECT, productName);
+                startActivity(Intent.createChooser(intent, "Send mail..."));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
                 }
-            });
-        }
+            }
+        });
 
         // Initialise EditTexts
         pNameET = (EditText) findViewById(R.id.edit_text_name);
@@ -363,12 +359,15 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         String photoPath = null;
 
         // Check to see if this is a new item
-        if (productUri == null) {
+        if (photoUri != null) {
             photoPath = photoUri.getPath();
             productImageView.setTag(photoPath);
+        } else {
+            Toast.makeText(this, R.string.toast_take_photo, Toast.LENGTH_LONG).show();
+            return;
         }
 
-        if (productUri == null && TextUtils.isEmpty(name) || photoPath == null) {
+        if (productUri == null && TextUtils.isEmpty(name)) {
             Toast.makeText(this, R.string.toast_fill_out_feilds, Toast.LENGTH_LONG).show();
             return;
         }
