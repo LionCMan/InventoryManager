@@ -287,6 +287,8 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
                 if (productHasChanged) {
                     // Call save/edit method
                     saveProduct();
+                    Intent inventoryIntent = new Intent(ProductDetailActivity.this, InventoryActivity.class);
+                    startActivity(inventoryIntent);
                 } else {
                     // Show toast when no product is updated nor created
                     Toast.makeText(this, getString(R.string.toast_insert_or_update_product_failed),
@@ -358,11 +360,14 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         String unitPrice = pPriceET.getText().toString().trim();
         String photoPath = null;
 
+        String title = getTitle().toString().trim();
+        String editTitle = getString(R.string.activity_detail_edit);
+
         // Check to see if this is a new item
         if (photoUri != null) {
             photoPath = photoUri.getPath();
             productImageView.setTag(photoPath);
-        } else {
+        } else if (title != editTitle) {
             Toast.makeText(this, R.string.toast_take_photo, Toast.LENGTH_LONG).show();
             return;
         }
@@ -472,6 +477,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
      * Ask for user confirmation to exit activity before saving
      */
     private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener) {
+
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -537,6 +543,11 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Bail early if the cursor is null or there is less than 1 row in the cursor
+        if (data == null || data.getCount() < 1) {
+            return;
+        }
+
         if (data.moveToFirst()) {
             productName = data.getString(data.getColumnIndex(ProductEntry.COLUMN_NAME));
             pNameET.setText(productName);
@@ -546,10 +557,9 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             productQuantity = data.getInt(data.getColumnIndex(ProductEntry.COLUMN_QUANTITY));
             pQuantityET.setText(String.valueOf(productQuantity));
 
-            if (data.getBlob(data.getColumnIndex(ProductEntry.COLUMN_IMAGE)) != null) {
-                productImageView.setImageBitmap(getImage(
-                        data.getBlob(data.getColumnIndex(ProductEntry.COLUMN_IMAGE))));
-            }
+            mImage = data.getString(data.getColumnIndex(ProductEntry.COLUMN_IMAGE));
+            Uri imageUri = Uri.parse("content://" + FILE_PROVIDER_AUTHORITY + mImage);
+            productImageView.setImageBitmap(getBitmapFromUri(imageUri));
         }
     }
 
